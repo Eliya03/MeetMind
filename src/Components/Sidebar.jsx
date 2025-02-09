@@ -4,7 +4,7 @@ import { Calendar, Clock, FileText, CheckSquare } from 'lucide-react';
 
 const Sidebar = ({ activeSection, onSectionChange }) => {
   const menuItems = [
-    { id: 'meetings', icon: Calendar, text: 'פגישות' },
+    { id: 'meetings', icon: Calendar, text: 'לא פגישות' },
     { id: 'history', icon: FileText, text: 'היסטוריית סיכומים' },
     { id: 'tasks', icon: CheckSquare, text: 'משימות פתוחות' }
   ];
