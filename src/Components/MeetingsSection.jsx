@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components/MeetingCard.jsx
 const MeetingCard = ({ title, date, participants, duration, decisions, tasks, onView }) => (
@@ -19,6 +19,7 @@ const MeetingCard = ({ title, date, participants, duration, decisions, tasks, on
 
 // components/MeetingsSection.jsx
 const MeetingsSection = ({ onNewMeeting }) => {
+
   const meetings = [
     {
       id: 1,
@@ -43,9 +44,9 @@ const MeetingsSection = ({ onNewMeeting }) => {
   return (
     <div>
       <button 
-        onClick={onNewMeeting}
+        onClick={() => {onNewMeeting()}}
         className="bg-green-500 text-white px-6 py-3 rounded mb-5 hover:bg-green-600 transition-colors"
-      >
+     >
         פגישה חדשה +
       </button>
       
