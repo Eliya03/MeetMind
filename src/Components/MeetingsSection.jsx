@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {CalendarPlus} from 'lucide-react';
 
 // components/MeetingCard.jsx
 const MeetingCard = ({ title, date, participants, duration, decisions, tasks, onView }) => (
@@ -45,9 +46,9 @@ const MeetingsSection = ({ onNewMeeting }) => {
     <div>
       <button 
         onClick={() => {onNewMeeting()}}
-        className="bg-green-500 text-white px-6 py-3 rounded mb-5 hover:bg-green-600 transition-colors"
+        className="bg-green-500 text-white px-6 py-3 rounded mb-5 hover:bg-green-600 transition-colors flex items-center gap-2"
      >
-        פגישה חדשה +
+        פגישה חדשה <span><CalendarPlus /></span>
       </button>
       
       <h2 className="text-xl font-bold mb-4">פגישות אחרונות</h2>
