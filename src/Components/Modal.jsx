@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { UserRoundPlus, Pencil, CircleCheck, CircleX, Trash2, UsersRound } from "lucide-react";
-import { BiCheckSquare} from "react-icons/bi";
-import { CiSquareRemove} from "react-icons/ci";
+import { MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
+
 
 const predefinedParticipants = [
   { name: "יוסי כהן", email: "yossi@company.com", id: "123456" },
@@ -228,7 +228,7 @@ const Modal = ({ isOpen, onClose }) => {
         className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex items-center gap-1"
       >
         {isSelecting ? 'בטל בחירה' : 'בחירה מרובה'}
-        {isSelecting ? <CiSquareRemove/> : <BiCheckSquare/>}
+        {isSelecting ? <MdCheckCircle size={20} /> : <MdRadioButtonUnchecked size={20} />}
       </button>
     )}
   </h4>
@@ -258,7 +258,7 @@ const Modal = ({ isOpen, onClose }) => {
                               onClick={handleEditConfirm}
                               className="text-green-500 transition-all duration-300"
                             >
-                              <CircleCheck size={16} />
+                              <CircleCheck size={20} />
                             </button>
                           ) : (
                             participant.manual && (
@@ -266,7 +266,7 @@ const Modal = ({ isOpen, onClose }) => {
                                 onClick={() => handleEditClick(index)}
                                 className="text-blue-500 transition-all duration-300"
                               >
-                                <Pencil size={16} />
+                                <Pencil size={20} />
                               </button>
                             )
                           )}
@@ -281,6 +281,11 @@ const Modal = ({ isOpen, onClose }) => {
                                 onChange={(e) =>
                                   handleEditChange(index, field, e.target.value)
                                 }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    handleEditConfirm();
+                                  }
+                                }}
                                 className="border rounded p-1 w-full transition-all duration-300"
                               />
                             ) : (
@@ -309,7 +314,7 @@ const Modal = ({ isOpen, onClose }) => {
                               onClick={() => handleRemoveParticipant(index)}
                               className="text-red-500 hover:text-red-700 transition-all duration-300"
                             >
-                              <CircleX size={16} />
+                              <CircleX size={20} />
                             </button>
                           )}
                         </td>
