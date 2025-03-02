@@ -53,6 +53,12 @@ const ActiveMeeting = () => {
       setTranscript(prev => `${prev}\n[הערה] ${note}`);
     }
   };
+  const handleEditUser = () => {
+    const note = prompt('הוסף הערה:');
+    if (note) {
+      setTranscript(prev => `${prev}\n[הערה] ${note}`);
+    }
+  };
 
   const handleAddTask = () => {
     const task = prompt('הוסף משימה חדשה:');
@@ -95,11 +101,20 @@ const ActiveMeeting = () => {
           הוסף משימה
         </button>
         <button 
+        
           className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
         >
           <StopCircle size={20} />
           סיים פגישה
         </button>
+        <button 
+          onClick={handleEditUser}
+          className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
+        >
+          <Plus size={20} />
+     הוסף מידע נחוץ
+        </button>
+        
       </div>
 
       <div className="mt-8">

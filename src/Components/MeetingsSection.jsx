@@ -22,15 +22,17 @@ const MeetingCard = ({ title, date, participants, duration, decisions, tasks, on
 const MeetingsSection = ({ onNewMeeting }) => {
 
   const meetings = [
-    {
-      id: 1,
-      title: "תדריך מבצעי",
-      date: "30/01/2025",
-      participants: "8",
-      duration: "45",
-      decisions: "3",
-      tasks: "5"
-    },
+   
+      {
+        id: 1,
+        title: "תדריך מבצעי",
+        date: "28/02/2025", // תאריך חוקי במקום 30/02/2025
+        participants: "8",
+        duration: "45",
+        decisions: "3",
+        tasks: "5"
+      },
+ 
     {
       id: 2,
       title: "תדריך אימונים",
