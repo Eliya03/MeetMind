@@ -2,17 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { UserRoundPlus, Pencil, CircleCheck, CircleX, Trash2, UsersRound } from "lucide-react";
 import { MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
 
-
 const predefinedParticipants = [
   { name: "יוסי כהן", email: "yossi@company.com", id: "123456" },
   { name: "מיכל לוי", email: "michal@company.com", id: "654321" },
   { name: "דניאל ישראלי", email: "daniel@company.com", id: "789012" },
 ];
 
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, initialParticipants = [] }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState(initialParticipants);
   const [inputValue, setInputValue] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
   const [isDeleting, setIsDeleting] = useState(null);
@@ -34,7 +33,7 @@ const Modal = ({ isOpen, onClose }) => {
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => {
-      onClose();
+      onClose(participants);
       setShouldRender(false);
     }, 500);
   };
@@ -183,7 +182,7 @@ const Modal = ({ isOpen, onClose }) => {
             <h2 className="text-xl font-bold text-center flex justify-center items-center gap-2">
               הוספת משתתפים
               <span><UsersRound /></span>
-              </h2>
+            </h2>
             <div className="flex flex-col w-full">
               <label htmlFor="participant-input" className="text-xs text-gray-600 mb-1 text-center">
                 *הקלד שם/מייל/מ.א
@@ -213,25 +212,21 @@ const Modal = ({ isOpen, onClose }) => {
           </div>
 
           <div className="w-3/4 bg-gray-100 p-4 rounded-lg shadow-md overflow-auto max-h-[400px]">
-  <h4 className="font-semibold mb-2 flex items-center">
-    {/* הטקסט - ממורכז */}
-    <span className="flex-grow text-center flex justify-center gap-2">({participants.length}) משתתפים<span><UsersRound /></span></span>
-    
-
-    {/* הכפתור - בצד ימין (בעברית: שמאל) */}
-    {participants.length > 0 && (
-      <button
-        onClick={() => {
-          setIsSelecting(!isSelecting);
-          setSelectedParticipants([]);
-        }}
-        className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex items-center gap-1"
-      >
-        {isSelecting ? 'בטל בחירה' : 'בחירה מרובה'}
-        {isSelecting ? <MdCheckCircle size={20} /> : <MdRadioButtonUnchecked size={20} />}
-      </button>
-    )}
-  </h4>
+            <h4 className="font-semibold mb-2 flex items-center">
+              <span className="flex-grow text-center flex justify-center gap-2">({participants.length}) משתתפים<span><UsersRound /></span></span>
+              {participants.length > 0 && (
+                <button
+                  onClick={() => {
+                    setIsSelecting(!isSelecting);
+                    setSelectedParticipants([]);
+                  }}
+                  className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex items-center gap-1"
+                >
+                  {isSelecting ? 'בטל בחירה' : 'בחירה מרובה'}
+                  {isSelecting ? <MdCheckCircle size={20} /> : <MdRadioButtonUnchecked size={20} />}
+                </button>
+              )}
+            </h4>
             {participants.length > 0 ? (
               <table className="w-full border-collapse">
                 <thead>
@@ -341,6 +336,7 @@ const Modal = ({ isOpen, onClose }) => {
           </button>
         )}
 
+        {/* תיקון: הוספת כפתור מחיקת נבחרים */}
         {isSelecting && selectedParticipants.length > 0 && (
           <button
             onClick={() => setIsBulkDeleteConfirmOpen(true)}
@@ -351,6 +347,7 @@ const Modal = ({ isOpen, onClose }) => {
           </button>
         )}
 
+        {/* חלון אישור למחיקת משתתף בודד */}
         {isDeleting !== null && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-20">
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -373,6 +370,7 @@ const Modal = ({ isOpen, onClose }) => {
           </div>
         )}
 
+        {/* תיקון: חלון אישור למחיקה מרובה */}
         {isBulkDeleteConfirmOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-20">
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">
