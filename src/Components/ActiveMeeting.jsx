@@ -50,20 +50,14 @@ const ActiveMeeting = () => {
   const handleAddNote = () => {
     const note = prompt('הוסף הערה:');
     if (note) {
-      setTranscript(prev => `${prev}\n[הערה] ${note}`);
-    }
-  };
-  const handleEditUser = () => {
-    const note = prompt('הוסף הערה:');
-    if (note) {
-      setTranscript(prev => `${prev}\n[הערה] ${note}`);
+      setTranscript(prev => `${prev}\n<span class='text-blue-600 font-bold'>[הערה]</span> ${note}`);
     }
   };
 
   const handleAddTask = () => {
     const task = prompt('הוסף משימה חדשה:');
     if (task) {
-      setTranscript(prev => `${prev}\n[משימה] ${task}`);
+      setTranscript(prev => `${prev}\n<span class='text-yellow-600 font-bold'>[משימה]</span> ${task}`);
     }
   };
 
@@ -81,9 +75,8 @@ const ActiveMeeting = () => {
         className="min-h-[200px] p-4 border border-gray-200 rounded-lg bg-white"
         contentEditable
         suppressContentEditableWarning
-      >
-        {transcript}
-      </div>
+        dangerouslySetInnerHTML={{ __html: transcript }}
+      />
 
       <div className="flex gap-4">
         <button 
@@ -101,20 +94,11 @@ const ActiveMeeting = () => {
           הוסף משימה
         </button>
         <button 
-        
           className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
         >
           <StopCircle size={20} />
           סיים פגישה
         </button>
-        <button 
-          onClick={handleEditUser}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
-        >
-          <Plus size={20} />
-     הוסף מידע נחוץ
-        </button>
-        
       </div>
 
       <div className="mt-8">
