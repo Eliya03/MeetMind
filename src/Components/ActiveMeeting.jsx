@@ -50,14 +50,14 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
   const handleAddNote = () => {
     const note = prompt('הוסף הערה:');
     if (note) {
-      setTranscript(prev => `${prev}\n<span class="text-blue-600 font-bold">[הערה]</span> ${note}`);
+      setTranscript(prev => `${prev}\n<span class="text-blue-600 font-bold">${note}</span`);
     }
   };
 
   const handleAddTask = () => {
     const task = prompt('הוסף משימה חדשה:');
     if (task) {
-      setTranscript(prev => `${prev}\n<span class="text-yellow-600 font-bold">[משימה]</span> ${task}`);
+      setTranscript(prev => `${prev}\n<span class="text-yellow-600 font-bold"><${task}</span`);
     }
   };
 
