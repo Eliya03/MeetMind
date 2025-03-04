@@ -88,11 +88,13 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
               משתתפים ({participants.length}) <UsersRound size={20} />
             </h3>
             <button
-              onClick={onEditParticipants}
-              className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex justify-center items-center gap-2"
+            onClick={onEditParticipants}
+            className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex justify-center items-center gap-2 group"
             >
-              ערוך <Pencil size={17} />
+            ערוך 
+            <Pencil size={17} className="transition-transform duration-300 group-hover:scale-110" />
             </button>
+
           </div>
           {participants.length > 0 ? (
             <ul className="space-y-3 text-sm">

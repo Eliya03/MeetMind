@@ -172,9 +172,9 @@ const Modal = ({ isOpen, onClose, initialParticipants = [] }) => {
       >
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-gray-600 text-xl z-10"
+          className="absolute top-0.5 right-0.5 text-xl text-red-500 hover:text-red-700 transition-all duration-300 hover:scale-110 z-10"
         >
-          &times;
+          <CircleX size={23} />
         </button>
 
         <div className="flex gap-4">
@@ -251,7 +251,7 @@ const Modal = ({ isOpen, onClose, initialParticipants = [] }) => {
                           {editingIndex === index ? (
                             <button
                               onClick={handleEditConfirm}
-                              className="text-green-500 transition-all duration-300"
+                              className="text-green-500 hover:text-green-700 transition-all duration-300 hover:scale-125"
                             >
                               <CircleCheck size={20} />
                             </button>
@@ -259,7 +259,7 @@ const Modal = ({ isOpen, onClose, initialParticipants = [] }) => {
                             participant.manual && (
                               <button
                                 onClick={() => handleEditClick(index)}
-                                className="text-blue-500 transition-all duration-300"
+                                className="text-blue-500 hover:text-blue-700 transition-all duration-300 hover:scale-125"
                               >
                                 <Pencil size={20} />
                               </button>
@@ -307,7 +307,7 @@ const Modal = ({ isOpen, onClose, initialParticipants = [] }) => {
                           ) : (
                             <button
                               onClick={() => handleRemoveParticipant(index)}
-                              className="text-red-500 hover:text-red-700 transition-all duration-300"
+                              className="text-red-500 hover:text-red-700 transition-all duration-300 hover:scale-125"
                             >
                               <CircleX size={20} />
                             </button>
