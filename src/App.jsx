@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import Sidebar from './Components/Sidebar';
 import MeetingsSection from './Components/MeetingsSection';
@@ -17,14 +15,14 @@ const App = () => {
   const [participants, setParticipants] = useState([]);
 
   const handleStartMeeting = () => {
-    setIsActiveMeeting(true); // מעבר מיידי ל-ActiveMeeting
+    setIsActiveMeeting(true);
     setCurrentSection('active-meeting');
-    setIsModalOpen(true); // פתיחת ה-Modal מעליו
+    setIsModalOpen(true);
   };
 
   const handleModalClose = (updatedParticipants) => {
     setParticipants(updatedParticipants || participants);
-    setIsModalOpen(false); // סגירת ה-Modal בלי לשנות את הדף
+    setIsModalOpen(false);
   };
 
   const handleEndMeeting = () => {
@@ -43,6 +41,7 @@ const App = () => {
           onEndMeeting={handleEndMeeting}
           participants={participants}
           onEditParticipants={handleEditParticipants}
+          isModalOpen={isModalOpen} // העברת isModalOpen כ-prOp
         />
       );
     }

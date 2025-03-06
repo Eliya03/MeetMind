@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, MicOff, Plus, File, StopCircle, UsersRound, Pencil } from 'lucide-react';
-import { Search } from 'lucide-react'; // הוספתי אייקון חיפוש
+import { Mic, MicOff, Plus, File, StopCircle, UsersRound, Pencil, Search } from 'lucide-react';
 
 const RecordingControls = ({ isRecording, onToggleRecording, recordingTime }) => {
   return (
@@ -19,12 +18,13 @@ const RecordingControls = ({ isRecording, onToggleRecording, recordingTime }) =>
   );
 };
 
-const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
+const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModalOpen }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState('00:00:00');
   const [transcript, setTranscript] = useState('תמלול בזמן אמת יופיע כאן...');
   const [seconds, setSeconds] = useState(0);
-  const [searchTerm, setSearchTerm] = useState(''); // State חדש לחיפוש
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showHighlight, setShowHighlight] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -41,6 +41,13 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
     }
     return () => clearInterval(interval);
   }, [isRecording, seconds]);
+
+  // הפעלת האנימציה מיד כשה-Modal נסגר
+  useEffect(() => {
+    if (!isModalOpen && !showHighlight) {
+      setShowHighlight(true); // מידי, ללא עיכוב
+    }
+  }, [isModalOpen, showHighlight]);
 
   const handleToggleRecording = () => {
     setIsRecording(!isRecording);
@@ -63,7 +70,6 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
     }
   };
 
-  // פונקציה לסינון המשתתפים לפי החיפוש
   const filteredParticipants = participants.filter(participant =>
     participant.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     participant.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -82,16 +88,25 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
             onToggleRecording={handleToggleRecording}
             recordingTime={recordingTime}
           />
-          <div
-            className="min-h-[200px] p-4 border border-gray-200 rounded-lg bg-white mt-4 overflow-auto"
-            contentEditable
-            suppressContentEditableWarning
-            dangerouslySetInnerHTML={{ __html: transcript }}
-          />
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">תיבת תמלול</h3>
+            <div
+              className={`min-h-[200px] p-4 border border-gray-200 rounded-lg bg-white overflow-auto ${
+                showHighlight ? 'animate-pulseHighlight' : ''
+              }`}
+              contentEditable
+              suppressContentEditableWarning
+              dangerouslySetInnerHTML={{ __html: transcript }}
+            />
+          </div>
         </div>
 
         {/* אזור המשתתפים עם גלילה וחיפוש */}
-        <div className="w-full bg-gray-100 p-4 rounded-lg shadow-md max-h-[400px] overflow-auto">
+        <div
+          className={`w-full bg-gray-100 p-4 rounded-lg shadow-md max-h-[400px] overflow-auto ${
+            showHighlight ? 'animate-pulseHighlight' : ''
+          }`}
+        >
           <div className="mb-4">
             <div className="relative">
               <input
