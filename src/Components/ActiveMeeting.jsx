@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mic, MicOff, Plus, File, StopCircle, UsersRound, Pencil } from 'lucide-react';
+import { Search } from 'lucide-react'; // הוספתי אייקון חיפוש
 
 const RecordingControls = ({ isRecording, onToggleRecording, recordingTime }) => {
   return (
@@ -23,6 +24,7 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
   const [recordingTime, setRecordingTime] = useState('00:00:00');
   const [transcript, setTranscript] = useState('תמלול בזמן אמת יופיע כאן...');
   const [seconds, setSeconds] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(''); // State חדש לחיפוש
 
   useEffect(() => {
     let interval;
@@ -53,14 +55,20 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
       setTranscript(prev => `${prev}\n<span class="text-blue-600 font-bold">${note}</span>`);
     }
   };
-  
+
   const handleAddTask = () => {
     const task = prompt('הוסף משימה חדשה:');
     if (task) {
       setTranscript(prev => `${prev}\n<span class="text-yellow-600 font-bold">${task}</span>`);
     }
   };
-  
+
+  // פונקציה לסינון המשתתפים לפי החיפוש
+  const filteredParticipants = participants.filter(participant =>
+    participant.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    participant.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    participant.id?.toString().includes(searchTerm)
+  );
 
   return (
     <div className="space-y-6">
@@ -82,24 +90,38 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
           />
         </div>
 
-        {/* אזור המשתתפים עם גלילה */}
+        {/* אזור המשתתפים עם גלילה וחיפוש */}
         <div className="w-full bg-gray-100 p-4 rounded-lg shadow-md max-h-[400px] overflow-auto">
+          <div className="mb-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="חפש לפי שם, אימייל או מ.א..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <Search
+                size={20}
+                className="absolute left-3 top-2 text-gray-400"
+              />
+            </div>
+          </div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold flex items-center gap-2">
-              משתתפים ({participants.length}) <UsersRound size={20} />
+              משתתפים ({filteredParticipants.length}) <UsersRound size={20} />
             </h3>
             <button
-            onClick={onEditParticipants}
-            className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex justify-center items-center gap-2 group"
+              onClick={onEditParticipants}
+              className="text-blue-500 text-sm px-3 py-1 border rounded-lg hover:bg-blue-50 flex justify-center items-center gap-2 group"
             >
-            ערוך 
-            <Pencil size={17} className="transition-transform duration-300 group-hover:scale-110" />
+              ערוך 
+              <Pencil size={17} className="transition-transform duration-300 group-hover:scale-110" />
             </button>
-
           </div>
-          {participants.length > 0 ? (
+          {filteredParticipants.length > 0 ? (
             <ul className="space-y-3 text-sm">
-              {participants.map((participant, index) => (
+              {filteredParticipants.map((participant, index) => (
                 <li key={participant.id} className="border-b pb-2">
                   <div className="flex items-center gap-2">
                     <span className="font-bold">{index + 1}.</span>
@@ -113,7 +135,7 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants }) => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-600">אין משתתפים</p>
+            <p className="text-gray-600">אין משתתפים תואמים</p>
           )}
         </div>
       </div>
