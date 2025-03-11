@@ -1,5 +1,5 @@
 import React from 'react';
-import { Send, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
+import { Send, Download, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
 
 const SummarySection = ({ title, items, icon: Icon }) => {
   return (
@@ -39,7 +39,10 @@ const MeetingSummary = () => {
   const handleSendSummary = () => {
     alert('סיכום הפגישה נשלח בהצלחה לכל המשתתפים!');
   };
-
+  
+  const handleSendSummaryd = () => {
+    alert('סיכום הפגישה ירד בהצלחה !');
+  };
   return (
     <div className="bg-white p-8 rounded-lg shadow-sm space-y-8">
       <h2 className="text-2xl font-bold">סיכום פגישה - תדריך מבצעי</h2>
@@ -63,10 +66,17 @@ const MeetingSummary = () => {
           icon={HelpCircle}
         />
       </div>
+      <button
+        onClick={handleSendSummaryd}
+        className="flex items-center gap-2 px-6 py-3 bg-indigo-900 text-white rounded-md mt-8"
+      >
+        < Download size={20} />
+        הורד סיכום
+      </button>
 
       <button
         onClick={handleSendSummary}
-        className="flex items-center gap-2 px-6 py-3 bg-indigo-900 text-white rounded-md mt-8"
+        className="flex  gap-2 px-6 py-3 bg-indigo-900 text-white rounded-md mt-8"
       >
         <Send size={20} />
         שלח סיכום במייל

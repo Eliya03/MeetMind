@@ -37,6 +37,13 @@ const HistorySection = () => {
       type: 'operational',
     },
     {
+      title: 'תדריך מבצעי - מבצע "חומת מגן"',
+      date: '11/03/2025',
+      participants: 'סא"ל דוד כהן, רס"ן יעל לוי, + 6 נוספים',
+      decisions: 'אישור תכנית מבצעית, הגדלת תקציב אימונים',
+      type: 'operational',
+    },
+    {
       title: 'תדריך אימונים שבועי',
       date: '02/01/2024',
       participants: 'רס"ן אבי לוי, סרן דנה כהן, + 4 נוספים',
