@@ -161,7 +161,7 @@ const Modal = ({ isOpen, onClose, initialParticipants = [] }) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center transition-opacity duration-500 modal-overlay ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >

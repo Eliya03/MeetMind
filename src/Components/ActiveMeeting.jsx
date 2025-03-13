@@ -25,6 +25,11 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
   const [seconds, setSeconds] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [showHighlight, setShowHighlight] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [hasShownInitialAnimation, setHasShownInitialAnimation] = useState(() => {
+    return localStorage.getItem('hasShownMeetingAnimation') === 'true'
+  });
+  const [isBlurFading, setIsBlurFading] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -42,12 +47,31 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
     return () => clearInterval(interval);
   }, [isRecording, seconds]);
 
-  // הפעלת האנימציה מיד כשה-Modal נסגר
   useEffect(() => {
-    if (!isModalOpen && !showHighlight) {
-      setShowHighlight(true); // מידי, ללא עיכוב
+    let timer1, timer2;
+    
+    if (!isModalOpen && !hasShownInitialAnimation) {
+      setShowHighlight(true);
+      setIsAnimating(true);
+      localStorage.setItem('hasShownMeetingAnimation', 'true');
+  
+      timer1 = setTimeout(() => {
+        setIsBlurFading(true);
+      }, 4000);
+  
+      timer2 = setTimeout(() => {
+        setShowHighlight(false);
+        setIsAnimating(false);
+        setIsBlurFading(false);
+        setHasShownInitialAnimation(true);
+      }, 4300);
     }
-  }, [isModalOpen, showHighlight]);
+  
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isModalOpen, hasShownInitialAnimation]);
 
   const handleToggleRecording = () => {
     setIsRecording(!isRecording);
@@ -77,11 +101,22 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
   );
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">פגישה פעילה</h2>
+    <div className="space-y-6 relative">
+      {showHighlight && (
+  <div
+    className={`fixed inset-0 blur-background ${isBlurFading ? 'fade-out' : ''}`}
+    onTransitionEnd={() => {
+      if (isBlurFading) {
+        setShowHighlight(false);
+        setIsBlurFading(false);
+      }
+    }}
+  />
+)}
+
+      <h2 className="text-2xl font-bold relative z-10">פגישה פעילה</h2>
 
       <div className="grid grid-cols-3 gap-6">
-        {/* אזור התמלול */}
         <div className="col-span-2">
           <RecordingControls
             isRecording={isRecording}
@@ -91,8 +126,8 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
           <div className="mt-4">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">תיבת תמלול</h3>
             <div
-              className={`min-h-[200px] p-4 border border-gray-200 rounded-lg bg-white overflow-auto ${
-                showHighlight ? 'animate-pulseHighlight' : ''
+              className={`min-h-[200px] p-4 border border-gray-200 rounded-lg bg-white overflow-auto relative ${
+                isAnimating ? 'animate-pulseHighlight' : ''
               }`}
               contentEditable
               suppressContentEditableWarning
@@ -101,10 +136,9 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
           </div>
         </div>
 
-        {/* אזור המשתתפים עם גלילה וחיפוש */}
         <div
-          className={`w-full bg-gray-100 p-4 rounded-lg shadow-md max-h-[400px] overflow-auto ${
-            showHighlight ? 'animate-pulseHighlight' : ''
+          className={`w-full bg-gray-100 p-4 rounded-lg max-h-[400px] overflow-auto relative ${
+            isAnimating ? 'animate-pulseHighlight' : ''
           }`}
         >
           <div className="mb-4">
@@ -116,10 +150,7 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
-              <Search
-                size={20}
-                className="absolute left-3 top-2 text-gray-400"
-              />
+              <Search size={20} className="absolute left-3 top-2 text-gray-400" />
             </div>
           </div>
           <div className="flex justify-between items-center mb-4">
@@ -155,46 +186,48 @@ const ActiveMeeting = ({ onEndMeeting, participants, onEditParticipants, isModal
         </div>
       </div>
 
-      <div className="flex gap-4 mt-4">
-        <button
-          onClick={handleAddNote}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
-        >
-          <Plus size={20} />
-          הוסף הערה
-        </button>
-        <button
-          onClick={handleAddTask}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
-        >
-          <Plus size={20} />
-          הוסף משימה
-        </button>
-        <button
-          onClick={onEndMeeting}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
-        >
-          <StopCircle size={20} />
-          סיים פגישה
-        </button>
-      </div>
+      <div className="relative z-10">
+        <div className="flex gap-4 mt-4">
+          <button
+            onClick={handleAddNote}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
+          >
+            <Plus size={20} />
+            הוסף הערה
+          </button>
+          <button
+            onClick={handleAddTask}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
+          >
+            <Plus size={20} />
+            הוסף משימה
+          </button>
+          <button
+            onClick={onEndMeeting}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-900 text-white rounded-md"
+          >
+            <StopCircle size={20} />
+            סיים פגישה
+          </button>
+        </div>
 
-      <div className="mt-8">
-        <h3 className="text-xl font-bold mb-4">מסמכים מצורפים</h3>
-        <ul className="space-y-2">
-          <li className="flex items-center gap-2">
-            <File size={16} />
-            <a href="#" className="text-indigo-600 hover:underline">
-              מצגת תדריך.pptx
-            </a>
-          </li>
-          <li className="flex items-center gap-2">
-            <File size={16} />
-            <a href="#" className="text-indigo-600 hover:underline">
-              נספח מבצעי.docx
-            </a>
-          </li>
-        </ul>
+        <div className="mt-8">
+          <h3 className="text-xl font-bold mb-4">מסמכים מצורפים</h3>
+          <ul className="space-y-2">
+            <li className="flex items-center gap-2">
+              <File size={16} />
+              <a href="#" className="text-indigo-600 hover:underline">
+                מצגת תדריך.pptx
+              </a>
+            </li>
+            <li className="flex items-center gap-2">
+              <File size={16} />
+              <a href="#" className="text-indigo-600 hover:underline">
+                נספח מבצעי.docx
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );
