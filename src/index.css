@@ -4,24 +4,89 @@
 
 /* keyframes for fadeIn and fadeOut */
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-      transform: scale(1);
-    }
-    to {
-      opacity: 0;
-      transform: scale(0.95);
-    }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
+}
   
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* אנימציית הופעה והיעלמות של הטשטוש */
+@keyframes fadeBlur {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* אפקט טשטוש לרקע */
+.blur-background {
+  backdrop-filter: blur(6px) brightness(0.5);
+  -webkit-backdrop-filter: blur(6px) brightness(0.5);
+  pointer-events: none;
+  z-index: 20;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+  animation: fadeBlur 0.3s ease-in forwards;
+}
+
+/* קלאס לאנימציית היציאה */
+.blur-background.fade-out {
+  opacity: 0;
+}
+
+/* אנימציית זוהר חדשה ומודגשת */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+  }
+  25% {
+    box-shadow: 0 0 60px rgba(59, 130, 246, 1),
+                0 0 25px rgba(59, 130, 246, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+  }
+  75% {
+    box-shadow: 0 0 60px rgba(59, 130, 246, 1),
+                0 0 25px rgba(59, 130, 246, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* סגנון לאנימציית הפולס עם הזוהר */
+.animate-pulseHighlight {
+  position: relative;
+  z-index: 25;
+  background: white;
+  border-radius: 8px;
+  animation: glow 4s ease-in-out;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* מודאל תמיד מעל הכל */
+.modal-overlay {
+  z-index: 50;
+}
+
+/* כשהאלמנט נעלם מה-DOM, הטרנזישן יתן לו להיעלם בצורה חלקה */
+.blur-background.removing {
+  opacity: 0;
+}

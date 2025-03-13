@@ -41,7 +41,7 @@ const App = () => {
           onEndMeeting={handleEndMeeting}
           participants={participants}
           onEditParticipants={handleEditParticipants}
-          isModalOpen={isModalOpen} // העברת isModalOpen כ-prOp
+          isModalOpen={isModalOpen}
         />
       );
     }
@@ -62,12 +62,14 @@ const App = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50" dir="rtl">
-      <Sidebar
-        activeSection={currentSection}
-        onSectionChange={setCurrentSection}
-        isActiveMeeting={isActiveMeeting}
-      />
-      <main className="flex-1 p-8 mr-64">{renderContent()}</main>
+      <div className="w-full">
+        <Sidebar
+          activeSection={currentSection}
+          onSectionChange={setCurrentSection}
+          isActiveMeeting={isActiveMeeting}
+        />
+        <main className="flex-1 p-8 mr-64">{renderContent()}</main>
+      </div>
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}
