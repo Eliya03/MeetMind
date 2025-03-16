@@ -4,9 +4,11 @@ import { AlertCircle, Clock, User, RefreshCw, Eye } from 'lucide-react';
 const getPriorityColor = (priority) => {
   const colors = {
     high: 'bg-red-500',
+    critical: 'bg-orange-500', 
     medium: 'bg-yellow-500',
-    low: 'bg-green-500'
+    low: 'bg-green-500',
   };
+  
   return colors[priority] || colors.medium;
 };
 
@@ -14,7 +16,9 @@ const getPriorityText = (priority) => {
   const text = {
     high: 'דחוף',
     medium: 'בינוני',
-    low: 'נמוך'
+    low: 'נמוך',
+    critical: 'ללא עדיפות'
+
   };
   return text[priority] || text.medium;
 };
@@ -76,7 +80,8 @@ const TaskItem = ({ task, onUpdateStatus }) => {
 const TasksSection = () => {
   const [tasks, setTasks] = useState([
     { title: "עדכון נהלי אבטחה", assignee: "סרן דנה כהן", dueDate: "05/02/2025", status: "בביצוע", priority: "high" },
-    { title: "הכנת תכנית אימונים מעודכנת", assignee: "רס\"ן יעל לוי", dueDate: "10/02/2025", status: "טרם התחיל", priority: "medium" },
+    { title: "הכנת תכנית  מעודכן ", assignee: "משה גולדשטיין סאל", dueDate: "10/05/2025", status: "טרם התחיל", priority:    "critical" },
+    { title: "הכנת תכנית אימונים מעודכנת", assignee: "רס\"ן יעל לוי", dueDate: "10/02/2025", status: "טרם עודכן", priority: "medium" },
     { title: "ביצוע ביקורת ציוד", assignee: "רס\"ר משה לוי", dueDate: "15/02/2025", status: "הושלם", priority: "low" }
   ]);
 
