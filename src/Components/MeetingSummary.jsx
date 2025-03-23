@@ -1,5 +1,8 @@
 import React from 'react';
 import { Send, Download, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 const SummarySection = ({ title, items, icon: Icon }) => {
   return (
@@ -18,6 +21,30 @@ const SummarySection = ({ title, items, icon: Icon }) => {
     </div>
   );
 };
+const handleDownloadPDF = async () => {
+  // מציין את האלמנט שממנו תיווצר תמונה
+  const element = document.querySelector('.bg-white'); 
+  
+  // שימוש ב-html2canvas להפקת תמונה מהאלמנט
+  const canvas = await html2canvas(element);
+  
+  // המרת התמונה לנתוני PNG
+  const imgData = canvas.toDataURL('image/png');
+  
+  // יצירת אובייקט PDF חדש
+  const pdf = new jsPDF('p', 'mm', 'a4'); // PDF בפורמט Portrait, מילימטרים, גודל A4
+  
+  const pageWidth = pdf.internal.pageSize.getWidth(); // רוחב עמוד PDF
+  const imgWidth = pageWidth - 20; // מתן שוליים
+  const imgHeight = (canvas.height * imgWidth) / canvas.width; // התאמת גובה תמונה יחסית לרוחב
+  
+  // הוספת התמונה ל-PDF
+  pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+  
+  // שמירת ה-PDF עם שם הקובץ
+  pdf.save('MeetingSummary.pdf');
+};
+
 
 const MeetingSummary = () => {
   const decisions = [
@@ -67,7 +94,7 @@ const MeetingSummary = () => {
         />
       </div>
       <button
-        onClick={handleSendSummaryd}
+        onClick={handleDownloadPDF}
         className="flex items-center gap-2 px-6 py-3 bg-indigo-900 text-white rounded-md mt-8"
       >
         < Download size={20} />
