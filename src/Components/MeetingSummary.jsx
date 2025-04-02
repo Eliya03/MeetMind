@@ -67,7 +67,7 @@ const handleSendEmail = () => {
 
       // הגדרת המשתנה templateParams במקום הנכון
       const templateParams = {
-        user_name: 'משתמש',
+        user_name: 'משתמש יקר',
         to_email: recipients.join(","), // שולח לכמה נמענים
         decisions: decisions.join('\n- '),
         tasks: tasks.join('\n- '),
@@ -77,10 +77,10 @@ const handleSendEmail = () => {
       console.log("נשלח ל-EmailJS:", templateParams); // הדפסת הנתונים לקונסולה לבדיקה
 
       emailjs.send(
-        'Moshegold770', // Service ID החדש
-        'template_vokc53b', // Template ID החדש
+        'MeetMind8930', // Service ID החדש
+        'template_zg3zl18', // Template ID החדש
         templateParams,
-        'BWHKUXLZ-bcKYg4gn' // Public Key
+        '1N7ChyPxXRiQ-nDRM' // Public Key
       )
       .then(() => {
         alert(`הסיכום נשלח ל-${recipients.join(", ")} בהצלחה!`);
